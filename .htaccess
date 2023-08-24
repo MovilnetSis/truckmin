@@ -1,0 +1,26 @@
+#Prevent viewing of .htaccess file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+ErrorDocument 400 /errores/error400.php
+ErrorDocument 404 /errores/error404.php
+ErrorDocument 403 /errores/error403.php
+ErrorDocument 503 /errores/error503.php
+
+Options +FollowSymLinks
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^www.truckmin.pe(:80)? [NC]
+RewriteRule ^(.*) https://truckmin.pe/$1 [R=301,L]
+order deny,allow
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteCond %{HTTP_HOST} ^truckmin\.movilnet\.pe$
+RewriteRule ^/?$ "https\:\/\/truckmin\.pe\/" [R=301,L]
+
